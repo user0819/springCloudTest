@@ -17,7 +17,7 @@ spring:
 
 logging:
   level:
-    com.xiang.order.feign: DEBUG
+    com.xiang.order.feign: INFO
 
 ---
 spring:

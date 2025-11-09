@@ -15,13 +15,13 @@ public class OrderConfig {
         return new RestTemplate();
     }
 
-    @Bean
-    Logger.Level feignLoggerLevel() {
-        return Logger.Level.FULL;
-    }
+//    @Bean
+//    Logger.Level feignLoggerLevel() {
+//        return Logger.Level.FULL;
+//    }
 
-    @Bean
-    Retryer retryer(){
-        return new Retryer.Default();
-    }
+//    @Bean
+//    Retryer retryer(){
+//        return new Retryer.Default();
+//    }
 }

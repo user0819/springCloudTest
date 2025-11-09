@@ -1,5 +1,7 @@
 package com.xiang.order.service;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.xiang.order.bean.Order;
 import com.xiang.order.feign.ProductFeignClient;
 import com.xiang.product.bean.Product;
@@ -38,7 +40,6 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order();
         order.setId(1L);
 
-
         // 总金额
         order.setTotalAmount(product.getPrice().multiply(new BigDecimal(product.getNum())));
         order.setUserId(userId);
@@ -47,6 +48,25 @@ public class OrderServiceImpl implements OrderService {
         //远程查询商品列表
         order.setProductList(List.of(product));
 
+        return order;
+    }
+
+    @SentinelResource(value = "createOrder",blockHandler = "createOrderFallback")
+    @Override
+    public Order createOrderSentinel(Long productId, Long userId) {
+        return createOrder(productId, userId);
+    }
+
+    //兜底回调
+    public Order createOrderFallback(Long productId, Long userId, BlockException e){
+        Order order = new Order();
+        order.setId(0L);
+        order.setTotalAmount(new BigDecimal("0"));
+        order.setUserId(userId);
+        order.setNickName("未知用户");
+        order.setAddress("异常信息："+e.getClass());
+
+        log.error("进入createOrderFallback");
         return order;
     }
 

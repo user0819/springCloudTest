@@ -6,4 +6,6 @@ import com.xiang.order.bean.Order;
 public interface OrderService {
 
     Order createOrder(Long productId, Long userId);
+
+    Order createOrderSentinel(Long productId, Long userId);
 }

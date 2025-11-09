@@ -33,7 +33,7 @@ public class OrderController {
     @GetMapping("/create")
     public Order createOrder(@RequestParam("userId") Long userId,
                              @RequestParam("productId") Long productId) {
-        return orderService.createOrder(productId, userId);
+        return orderService.createOrderSentinel(productId, userId);
     }
 
 
