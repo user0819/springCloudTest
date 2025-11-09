@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 
-//@Component
+@Component
 public class ProductFeignClientFallback implements ProductFeignClient {
     @Override
     public Product getProductById(Long id) {

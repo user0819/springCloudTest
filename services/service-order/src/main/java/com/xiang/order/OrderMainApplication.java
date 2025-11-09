@@ -10,7 +10,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableDiscoveryClient //开启服务发现功能
 @SpringBootApplication
 public class OrderMainApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(OrderMainApplication.class, args);
     }
