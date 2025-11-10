@@ -20,12 +20,12 @@ public class ProductController {
     public Product getProduct(@PathVariable("id") Long productId) {
 
         System.out.println("hello ....");
-        //        int i = 10/0;
-                try {
-                    TimeUnit.SECONDS.sleep(2);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+//                int i = 10/0;
+//                try {
+//                    TimeUnit.SECONDS.sleep(2);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
         return productService.getProductById(productId);
     }
 }

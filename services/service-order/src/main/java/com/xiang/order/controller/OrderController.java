@@ -1,6 +1,7 @@
 package com.xiang.order.controller;
 
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.xiang.order.bean.Order;
 import com.xiang.order.properties.OrderProperties;
 import com.xiang.order.service.OrderService;
@@ -23,10 +24,10 @@ public class OrderController {
     OrderProperties orderProperties;
 
     @GetMapping("/config")
-    public String config(){
-        return "order.timeout="+orderProperties.getTimeout()+"； " +
-                "order.auto-confirm="+orderProperties.getAutoConfirm() +"；"+
-                "order.db-url="+orderProperties.getDbUrl();
+    public String config() {
+        return "order.timeout=" + orderProperties.getTimeout() + "； " +
+                "order.auto-confirm=" + orderProperties.getAutoConfirm() + "；" +
+                "order.db-url=" + orderProperties.getDbUrl();
     }
 
     //创建订单
@@ -34,6 +35,25 @@ public class OrderController {
     public Order createOrder(@RequestParam("userId") Long userId,
                              @RequestParam("productId") Long productId) {
         return orderService.createOrderSentinel(productId, userId);
+    }
+
+
+    @GetMapping("/secKill")
+    @SentinelResource(value = "secKill-order", fallback = "secKillFallback")
+    public Order secKill(@RequestParam(value = "userId") Long userId,
+                         @RequestParam(value = "productId", defaultValue = "1000") Long productId) {
+        Order order = orderService.createOrder(productId, userId);
+        order.setId(Long.MAX_VALUE);
+        return order;
+    }
+
+    public Order secKillFallback(Long userId, Long productId, Throwable exception) {
+        System.out.println("secKillFallback....");
+        Order order = new Order();
+        order.setId(productId);
+        order.setUserId(userId);
+        order.setAddress("异常信息：" + exception.getClass());
+        return order;
     }
 
 

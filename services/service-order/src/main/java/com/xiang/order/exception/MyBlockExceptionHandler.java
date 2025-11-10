@@ -6,10 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xiang.common.R;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.PrintWriter;
 
+@Slf4j
 @Component
 public class MyBlockExceptionHandler implements BlockExceptionHandler {
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -28,5 +30,8 @@ public class MyBlockExceptionHandler implements BlockExceptionHandler {
 
         writer.flush();
         writer.close();
+
+//        log.error("被Sentinel限制了，原因：{}", e.getClass());
+
     }
 }
