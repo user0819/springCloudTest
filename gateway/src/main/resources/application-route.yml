@@ -1,0 +1,33 @@
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origin-patterns: '*'
+            allowed-headers: '*'
+            allowed-methods: '*'
+      routes:
+        - id: order-service
+          order: 0
+          uri: lb://service-order
+          predicates:
+            - Path=/api/order/**
+          filters:
+            - RewritePath=/api/order/?(?<segment>.*), /$\{segment}
+            - OnceToken=X-Response-Token, jwt
+        - id: product-service
+          order: 0
+          uri: lb://service-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/product/?(?<segment>.*), /$\{segment}
+        - id: baidu-service
+          order: 10
+          uri: https://www.baidu.com
+          predicates:
+            - Path=/**
+            - Vip=user,xiang
+      default-filters:
+        - AddResponseHeader=X-Response-Abc, 123
